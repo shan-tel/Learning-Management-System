@@ -28,3 +28,16 @@ class UserUpdate(BaseModel):
     role: RoleEnum | None = None
 
 
+class QuizBase(BaseModel):
+    question_text: str
+    correct_answer: str
+
+class QuizCreate(QuizBase):
+    pass
+
+class QuizResponse(QuizBase):
+    id: int
+    section_id: int
+
+    class Config:
+        from_attributes = True
