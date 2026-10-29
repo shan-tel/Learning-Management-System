@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from enum import Enum
 
 class RoleEnum(str, Enum):
@@ -13,13 +13,13 @@ class UserBase(BaseModel):
     role : RoleEnum = RoleEnum.student
 
 class UserCreate(UserBase):
-    password : str =  Field(min_length = 6)
+    password : str = Field(min_length = 6)
 
 class UserResponse(UserBase):
     id: int  
     
-    class Config:
-        from_attributes = True
+    
+    model_config = ConfigDict(from_attributes=True)
 
 class UserUpdate(BaseModel):
     username: str | None = None
@@ -28,6 +28,17 @@ class UserUpdate(BaseModel):
     role: RoleEnum | None = None
 
 
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+    user_id: int
+    role: str
+
+class TokenRefreshRequest(BaseModel):
+    refresh_token: str
+
+# --- QUIZ SCHEMAS ---
 class QuizBase(BaseModel):
     question_text: str
     correct_answer: str
@@ -39,5 +50,6 @@ class QuizResponse(QuizBase):
     id: int
     section_id: int
 
-    class Config:
-        from_attributes = True
+    
+    model_config = ConfigDict(from_attributes=True)
+

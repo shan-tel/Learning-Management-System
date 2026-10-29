@@ -9,6 +9,8 @@ router = APIRouter(prefix = "/users", tags =["Users"])
 
 @router.post("/register", response_model = schemas.UserResponse)
 def register_user(user_data: schemas.UserCreate, db:Session = Depends(get_db)):
+    print(f"Received user: {user_data.username}")
+   
     db_user = db.query(models.User).filter(models.User.email == user_data.email).first()
     if db_user:
         raise HTTPException(status_code = 400, detail = "Email already registered")
@@ -18,14 +20,17 @@ def register_user(user_data: schemas.UserCreate, db:Session = Depends(get_db)):
     email = user_data.email,
     full_name = user_data.full_name,
     hashed_password = hash_password(user_data.password),
-    role = user_data.role
+    role = user_data.role.value
     )
 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    return new_user
+    return {
+        "message": "Account created successfully!",
+        "user": new_user
+    }
 
 @router.get("/", response_model = list[schemas.UserResponse])
 def get_all_users(db: Session = Depends(get_db), current_user_id: int = Depends(get_current_user)):

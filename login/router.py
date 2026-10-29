@@ -5,6 +5,7 @@ from database import get_db
 from users import models
 from users.utils import verify_password
 from authentication.oauth2 import create_access_token  
+from users.models import User
 from . import schemas
 import jwt
 from authentication.oauth2 import create_access_token, create_refresh_token, SECRET_KEY, ALGORITHM
@@ -15,8 +16,7 @@ router = APIRouter(tags=["Login"])
 
 @router.post("/login", response_model=schemas.TokenResponse)
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
-    
+    user = db.query(User).filter(User.username == user_credentials.username).first()
     
     if not user or not verify_password(user_credentials.password, user.hashed_password):
         raise HTTPException(

@@ -1,10 +1,15 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from dotenv import load_dotenv
 
-SQLALCHEMY_DATABASE_URL = "postgresql://neondb_owner:npg_lGzOIi76rXaP@ep-proud-sun-aezm5dkz-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+load_dotenv() 
 
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(autocommit= False, autoflush = False, bind = engine)
 
