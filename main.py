@@ -6,6 +6,7 @@ from login import router as login_router
 from courses import router as courses_router
 from fastapi.middleware.cors import CORSMiddleware
 
+
 Base.metadata.create_all(bind = engine)
 
 app = FastAPI( title ="FastAPI School App")
@@ -14,7 +15,7 @@ origins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "http://127.0.0.1:3000",
-    
+    "http://127.0.0.1:5173",
 ]
 
 

@@ -27,10 +27,7 @@ def register_user(user_data: schemas.UserCreate, db:Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return {
-        "message": "Account created successfully!",
-        "user": new_user
-    }
+    return new_user
 
 @router.get("/", response_model = list[schemas.UserResponse])
 def get_all_users(db: Session = Depends(get_db), current_user_id: int = Depends(get_current_user)):

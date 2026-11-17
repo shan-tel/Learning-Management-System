@@ -9,3 +9,6 @@ class User(Base):
     full_name = Column(String, nullable = False)
     hashed_password = Column(String, nullable = False)
     role = Column(String, default = "student", nullable = False)
+    profile_picture = Column(String, nullable=True) 
+    official_title = Column(String, nullable=True) # e.g., "Senior Frontend Engineer"
+    bio = Column(String, nullable=True)
