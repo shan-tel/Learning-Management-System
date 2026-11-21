@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from enum import Enum
+from typing import List, Optional
 
 class RoleEnum(str, Enum):
     student = "student"
@@ -53,3 +54,16 @@ class QuizResponse(QuizBase):
     
     model_config = ConfigDict(from_attributes=True)
 
+
+
+class InstructorCatalogResponse(BaseModel):
+    id: int
+    full_name: str
+    official_title: Optional[str] = "Instructor"
+    profile_picture: Optional[str] = None
+    courses_count: int
+    students_count: int
+    course_titles: List[str] = []
+
+    class Config:
+        from_attributes = True

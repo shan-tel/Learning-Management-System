@@ -5,11 +5,14 @@ from users.router import router as users_router
 from login import router as login_router
 from courses import router as courses_router
 from fastapi.middleware.cors import CORSMiddleware
+from authentication.router import router as auth_router
+
+
 
 
 Base.metadata.create_all(bind = engine)
 
-app = FastAPI( title ="FastAPI School App")
+app = FastAPI( title ="Medemy Backend")
 
 origins = [
     "http://localhost:3000",
@@ -31,7 +34,7 @@ app.add_middleware(
 app.include_router(users_router)
 app.include_router(login_router.router)
 app.include_router(courses_router.router)
-
+app.include_router(auth_router)
 @app.get("/")
 def read_root():
     return{"message" : "Welcome to the School API! The datebase is connected."}

@@ -10,6 +10,12 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, BASE_DIR)
 
+CLOUDINARY_CLOUD_NAME=sb06tvio
+CLOUDINARY_API_KEY=295591536585121
+CLOUDINARY_API_SECRET=jTVaLajJ1e2pp84aoBKVDtRtmGw
+
+
+
 
 load_dotenv()
 

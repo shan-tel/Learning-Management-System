@@ -8,6 +8,31 @@ from typing import List
 
 router = APIRouter(prefix="/courses", tags=["Courses"])
 
+@router.post("/full", status_code=status.HTTP_201_CREATED)
+def create_full_course(
+    course: schemas.FullCourseCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    if current_user.role not in ("instructor", "teacher"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only instructors can create courses.",
+        )
+
+    new_course = models.Course(
+        title=course.title,
+        description=course.description,
+        pass_mark=course.pass_mark,
+        total_marks=course.total_marks,
+        sections_data=[s.model_dump() for s in course.sections],
+        course_quiz=[q.model_dump() for q in course.course_quiz],
+        instructor_id=current_user.id,
+    )
+    db.add(new_course)
+    db.commit()
+    db.refresh(new_course)
+    return new_course
 #@router.post("/", response_model=schemas.CourseResponse, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=schemas.CourseResponse, status_code=status.HTTP_201_CREATED)
 def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db), current_user: int = Depends(get_current_user)):

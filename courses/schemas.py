@@ -78,4 +78,10 @@ class AnswerItem(BaseModel):
 class SectionQuizSubmission(BaseModel):
     answers: List[AnswerItem]
 
-    
+class FullCourseCreate(BaseModel):
+    title: str
+    description: str
+    pass_mark: int = 50
+    total_marks: int = 0
+    sections: List[SectionCreate] = []
+    course_quiz: List[QuizQuestion] = []

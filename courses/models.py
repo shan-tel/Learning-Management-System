@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from database import Base 
+from sqlalchemy import Column, Integer, String, ForeignKey, JSON, Text
 
 
 class Course(Base):
@@ -14,9 +14,14 @@ class Course(Base):
     instructor_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     instructor = relationship("User") 
     
-    sections = relationship("Section", back_populates="course", cascade="all, delete")
+    
+    sections = relationship("Section", back_populates="course")
 
-
+    
+    pass_mark = Column(Integer, default=50)
+    total_marks = Column(Integer, default=0)
+    sections_data = Column(JSON, default=list)
+    course_quiz = Column(JSON, default=list)
 
 class Section(Base):
     __tablename__ = "sections"
